@@ -13,6 +13,8 @@ def password_get(response: Response, password = "", password_hash = ""):
 
 
     password_sha512 = hashlib.sha512(password.encode('utf-8')).hexdigest()
+    if not (password and password_hash):
+        raise HTTPException(status_code=401)
     if password_sha512 == password_hash:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response.status_code
