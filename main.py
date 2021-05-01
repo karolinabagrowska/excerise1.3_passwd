@@ -10,6 +10,9 @@ def password_get(response: Response, password = None, password_hash = None):
     #print(password_hash.hexdigest())
     #password_hash = hashlib.sha512(password.encode())
     password_without_spaces = password.replace(" ", "")
+    if password_without_spaces == "":
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response.status_code
     if password_without_spaces is None or password_hash is None:
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response.status_code
