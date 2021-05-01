@@ -13,6 +13,6 @@ def password_get(password, password_hash, response: Response):
     if password_sha512 == password_hash:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response.status_code
-    elif password_sha512 != password_hash:
+    else:
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response.status_code
