@@ -1,25 +1,21 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, HTTPException
 import hashlib
 app = FastAPI()
 
 
 @app.get("/auth")
-def password_get(response: Response, password = None, password_hash = None):
+def password_get(response: Response, password = "", password_hash = ""):
     #password_hash = hashlib.sha512(("haslo").encode('utf-8'))
     #print(password_hash.hexdigest())
     #password_hash = hashlib.sha512(password.encode())
-    password_without_spaces = password.replace(" ", "")
-    if password_without_spaces == "":
-        response.status_code = status.HTTP_401_UNAUTHORIZED
-        return response.status_code
-    if password is None or password_hash is None:
-        response.status_code = status.HTTP_401_UNAUTHORIZED
-        return response.status_code
+
+
     password_sha512 = hashlib.sha512(password.encode('utf-8')).hexdigest()
     if password_sha512 == password_hash:
         response.status_code = status.HTTP_204_NO_CONTENT
         return response.status_code
     else:
-        response.status_code = status.HTTP_401_UNAUTHORIZED
-        return response.status_code
+        raise HTTPException(status_code=401)
+        
